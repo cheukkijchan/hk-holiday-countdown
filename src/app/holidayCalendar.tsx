@@ -7,6 +7,8 @@ import { Calendar } from '../components/ui/calendar';
 import { Slider } from '../components/ui/slider';
 import { findLongestConsecutiveDay } from '../lib/logic';
 import { Holiday } from '../lib/types';
+import { filterDates } from '../lib/filterDates';
+import Countdown from './countdown';
 
 type HolidayCalendarProps = {
   publicHolidays: Holiday[];
@@ -46,23 +48,26 @@ export default function HolidayCalendar({
   );
 
   // count your whole holiday
-  // sudo find longest consecutive day combined marked & selected day
   const allHoliday = [...selectedDays, ...holidays];
+  // filter out the next few months date and create footer
+  const holidayRange = filterDates(allHoliday, slider);
   const footer: string = marked ? `${selected?.summary}` : 'fucked';
+  // sudo find longest consecutive day combined marked & selected day
   const longestHoliday = `And you have ${findLongestConsecutiveDay(
-    allHoliday
-  )} days in the next ${3} month`;
+    holidayRange
+  )} days in the next ${slider} month`;
 
   return (
     <>
+      <Countdown date={holidayRange[0]} />
       <Calendar
         selected={selectedDays}
         modifiersClassNames={{
-          marked: 'text-red-400 font-bold hover:text-red-600',
+          marked: 'text-red-400 hover:text-red-600 font-extrabold',
         }}
         modifiers={{ marked: holidays }}
         onDayClick={handleDayClick}
-        footer={footer}
+        footer={footer + longestHoliday}
       />
       <Slider
         max={12}
@@ -72,6 +77,7 @@ export default function HolidayCalendar({
         onValueChange={(value) => setSlider(value[0])}
       />
       {slider}
+      {JSON.stringify(holidayRange.map((date) => date.toDateString()))}
     </>
   );
 }
