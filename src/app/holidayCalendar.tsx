@@ -9,6 +9,8 @@ import { findLongestConsecutiveDay } from '../lib/logic';
 import { Holiday } from '../lib/types';
 import { filterDates } from '../lib/filterDates';
 import Countdown from './countdown';
+import { getWeekendDates } from '../lib/getWeekendDates';
+import { Switch } from '../components/ui/switch';
 
 type HolidayCalendarProps = {
   publicHolidays: Holiday[];
@@ -21,13 +23,32 @@ export default function HolidayCalendar({
   const [day, setDay] = useState<Date>();
   const [selectedDays, setSelectedDays] = useState<Date[]>([]);
 
-  // Adding Custom modifiers for fixed holiday
-  const holidays = [
-    ...publicHolidays.map((publicHolidays) => publicHolidays.date),
-  ];
+  const [saturday, setSaturday] = useState(true);
+  const [sunday, setSunday] = useState(true);
+
   const [marked, setMarked] = useState(false);
 
+  // Adding Custom modifiers for fixed holiday
+  let holidays = [
+    ...publicHolidays.map((publicHolidays) => publicHolidays.date),
+  ];
+  const { saturdayDates, sundayDates } = getWeekendDates(
+    holidays[holidays.length - 1]
+  );
+  // check saturday and sunday toggle
+  if (sunday) {
+    holidays = [...holidays, ...sundayDates];
+  }
+  if (saturday) {
+    holidays = [...holidays, ...saturdayDates];
+  }
+
   const handleDayClick: DayClickEventHandler = (day, modifiers) => {
+    // block selecting holiday
+    if (holidays.some((date) => date.getTime() === day.getTime())) {
+      return;
+    }
+
     setMarked(day && modifiers.marked);
     setDay(day);
 
@@ -60,6 +81,19 @@ export default function HolidayCalendar({
   return (
     <>
       <Countdown date={holidayRange[0]} />
+      <div>
+        <div>
+          Sun
+          <Switch checked={sunday} onCheckedChange={() => setSunday(!sunday)} />
+        </div>
+        <div>
+          Sat
+          <Switch
+            checked={saturday}
+            onCheckedChange={() => setSaturday(!saturday)}
+          />
+        </div>
+      </div>
       <Calendar
         selected={selectedDays}
         modifiersClassNames={{
@@ -69,13 +103,15 @@ export default function HolidayCalendar({
         onDayClick={handleDayClick}
         footer={footer + longestHoliday}
       />
-      <Slider
-        max={12}
-        min={1}
-        step={1}
-        value={[slider]}
-        onValueChange={(value) => setSlider(value[0])}
-      />
+      <div className='w-1/4'>
+        <Slider
+          max={12}
+          min={1}
+          step={1}
+          value={[slider]}
+          onValueChange={(value) => setSlider(value[0])}
+        />
+      </div>
       {slider}
       {JSON.stringify(holidayRange.map((date) => date.toDateString()))}
     </>

@@ -1,3 +1,4 @@
+import { ModeToggle } from '../components/ui/modeToggle';
 import { getHolidays } from '../lib/getHolidays';
 import HolidayCalendar from './holidayCalendar';
 
@@ -6,6 +7,7 @@ export default async function Home() {
 
   return (
     <main className='flex min-h-screen flex-col items-center justify-between p-24'>
+      <ModeToggle />
       {/* {publicHolidays.map((holiday) => (
         <div key={holiday.uid}>{holiday.summary}</div>
       ))} */}
