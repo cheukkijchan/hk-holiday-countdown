@@ -44,13 +44,12 @@ export default function HolidayCalendar({
   }
 
   const handleDayClick: DayClickEventHandler = (day, modifiers) => {
+    setMarked(day && modifiers.marked);
+    setDay(day);
     // block selecting holiday
     if (holidays.some((date) => date.getTime() === day.getTime())) {
       return;
     }
-
-    setMarked(day && modifiers.marked);
-    setDay(day);
 
     const newSelectedDays = [...selectedDays];
     if (modifiers.selected) {
@@ -64,37 +63,56 @@ export default function HolidayCalendar({
     setSelectedDays(newSelectedDays);
   };
 
+  // count your whole holiday BUGGED FOR DISPLAYING HOLIDAY NAME SINCE ONCLICK SELECT IS BLOCKED
   const selected = publicHolidays.find(
     (obj) => obj.date.getTime() === day?.getTime()
   );
 
-  // count your whole holiday
   const allHoliday = [...selectedDays, ...holidays];
   // filter out the next few months date and create footer
   const holidayRange = filterDates(allHoliday, slider);
-  const footer: string = marked ? `${selected?.summary}` : 'fucked';
+  const footer: string = marked
+    ? `${selected?.summary || 'Weekend'}`
+    : 'fucked ';
   // sudo find longest consecutive day combined marked & selected day
   const longestHoliday = `And you have ${findLongestConsecutiveDay(
     holidayRange
   )} days in the next ${slider} month`;
 
+  const nextPublicHoliday = [
+    ...publicHolidays.map((publicHolidays) => publicHolidays.date),
+  ].find((i) => {
+    const today = new Date();
+    return i > today;
+  });
+
   return (
     <>
-      <Countdown date={holidayRange[0]} />
-      <div>
-        <div>
-          Sun
-          <Switch checked={sunday} onCheckedChange={() => setSunday(!sunday)} />
-        </div>
+      <Countdown date={nextPublicHoliday!} />
+      <div className='flex flex-row space-x-2'>
         <div>
           Sat
           <Switch
             checked={saturday}
-            onCheckedChange={() => setSaturday(!saturday)}
+            onCheckedChange={() => {
+              setSelectedDays([]);
+              setSaturday(!saturday);
+            }}
+          />
+        </div>
+        <div>
+          Sun
+          <Switch
+            checked={sunday}
+            onCheckedChange={() => {
+              setSelectedDays([]);
+              setSunday(!sunday);
+            }}
           />
         </div>
       </div>
       <Calendar
+        disabled={{ before: new Date() }}
         selected={selectedDays}
         modifiersClassNames={{
           marked: 'text-red-400 hover:text-red-600 font-extrabold',

@@ -4,7 +4,7 @@ export function getWeekendDates(endDate: Date) {
   const saturdayDates = [];
   const sundayDates = [];
 
-  const today = new Date();
+  const today = new Date().setHours(0, 0, 0, 0);
   const currentDate = new Date(today);
   const targetDate = new Date(endDate);
 
