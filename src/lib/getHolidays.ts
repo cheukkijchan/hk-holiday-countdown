@@ -6,7 +6,7 @@ export function getHolidays() {
   // const data = await res.json();
 
   // Local Data for dev testing
-  const data = require('../app/public/data/tc.json');
+  const data = require('../../public/data/tc.json');
 
   const holidays = (data.vcalendar[0].vevent as Holiday[]).map((holiday) => {
     const year = holiday.dtstart[0].substring(0, 4);

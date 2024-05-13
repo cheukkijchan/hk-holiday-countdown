@@ -112,7 +112,7 @@ export default function HolidayCalendar({
         </div>
       </div>
       <Calendar
-        disabled={{ before: new Date() }}
+        disabled={{ before: new Date(), after: holidays[holidays.length - 1] }}
         selected={selectedDays}
         modifiersClassNames={{
           marked: 'text-red-400 hover:text-red-600 font-extrabold',
