@@ -11,6 +11,7 @@ import { filterDates } from '../lib/filterDates';
 import Countdown from './countdown';
 import { getWeekendDates } from '../lib/getWeekendDates';
 import { Switch } from '../components/ui/switch';
+import { useLanguage } from '../components/languageContext';
 
 type HolidayCalendarProps = {
   publicHolidays: Holiday[];
@@ -19,6 +20,8 @@ type HolidayCalendarProps = {
 export default function HolidayCalendar({
   publicHolidays,
 }: HolidayCalendarProps) {
+  const { language } = useLanguage();
+
   const [slider, setSlider] = useState<number>(3);
   const [day, setDay] = useState<Date>();
   const [selectedDays, setSelectedDays] = useState<Date[]>([]);

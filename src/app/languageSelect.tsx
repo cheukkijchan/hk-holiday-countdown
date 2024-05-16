@@ -1,3 +1,6 @@
+'use client';
+
+import { Options, useLanguage } from '../components/languageContext';
 import {
   Select,
   SelectContent,
@@ -7,16 +10,22 @@ import {
 } from '../components/ui/select';
 
 export default function LanguageSelect() {
-  const option = ['TC', 'EN'];
+  const { options, setLanguage } = useLanguage();
+
+  const handleSelect = (value: Options) => {
+    setLanguage(value);
+    console.log(value);
+  };
+
   return (
-    <Select>
+    <Select onValueChange={handleSelect}>
       <SelectTrigger className='w-[180px]'>
         <SelectValue placeholder='Language' />
       </SelectTrigger>
       <SelectContent>
-        {option.map((lang) => (
-          <SelectItem key={lang} value={lang}>
-            {lang}
+        {options.map((option) => (
+          <SelectItem key={option} value={option}>
+            {option}
           </SelectItem>
         ))}
       </SelectContent>
