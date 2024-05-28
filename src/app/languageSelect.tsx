@@ -1,6 +1,4 @@
 'use client';
-
-import { Options, useLanguage } from '../components/languageContext';
 import {
   Select,
   SelectContent,
@@ -8,17 +6,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../components/ui/select';
+import { useRouter } from 'next/navigation';
+import { locales as options } from '../middleware';
 
-export default function LanguageSelect() {
-  const { options, setLanguage } = useLanguage();
-
-  const handleSelect = (value: Options) => {
-    setLanguage(value);
-    console.log(value);
+interface Props {
+  lang: string;
+}
+export default function LanguageSelect({ lang }: Props) {
+  const router = useRouter();
+  const handleSelect = (value: string) => {
+    router.push(`${value}`);
   };
 
   return (
-    <Select onValueChange={handleSelect}>
+    <Select onValueChange={handleSelect} defaultValue={lang}>
       <SelectTrigger className='w-[180px]'>
         <SelectValue placeholder='Language' />
       </SelectTrigger>

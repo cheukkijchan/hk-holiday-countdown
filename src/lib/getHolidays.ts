@@ -1,11 +1,13 @@
+import { locales } from '../middleware';
 import { Holiday } from './types';
 
-export function getHolidays(lang: string) {
+export function getHolidays(lang: string): Holiday[] {
   // // fetching from 1823
   // const res = await fetch('https://www.1823.gov.hk/common/ical/en.json');
   // const data = await res.json();
 
   // Local Data for dev testing
+
   const data = require(`../../public/data/${lang}.json`);
 
   const holidays = (data.vcalendar[0].vevent as Holiday[]).map((holiday) => {
