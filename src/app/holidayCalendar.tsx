@@ -3,38 +3,46 @@
 import { isSameDay } from 'date-fns';
 import { useState } from 'react';
 import { DayClickEventHandler } from 'react-day-picker';
-import { Calendar } from '../components/ui/calendar';
-import { Slider } from '../components/ui/slider';
 import { findLongestConsecutiveDay } from '../lib/logic';
 import { Holiday } from '../lib/types';
 import { filterDates } from '../lib/filterDates';
-import Countdown from './countdown';
 import { getWeekendDates } from '../lib/getWeekendDates';
+import { Dict } from './[lang]/page';
+import Countdown from './countdown';
+import { Calendar } from '../components/ui/calendar';
+import { Slider } from '../components/ui/slider';
 import { Switch } from '../components/ui/switch';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 type HolidayCalendarProps = {
   publicHolidays: Holiday[];
+  dict: Dict;
 };
 
 export default function HolidayCalendar({
   publicHolidays,
+  dict,
 }: HolidayCalendarProps) {
   const [slider, setSlider] = useState<number>(3);
-  const [day, setDay] = useState<Date>();
-  const [selectedDays, setSelectedDays] = useState<Date[]>([]);
+  const [day, setDay] = useState<Date>(); //current selected day
+
+  // Save and store into URL state
+  const [selectedDays, setSelectedDays] = useState<Date[]>([]); // client selects
 
   const [saturday, setSaturday] = useState(true);
   const [sunday, setSunday] = useState(true);
 
-  const [marked, setMarked] = useState(false);
+  const [marked, setMarked] = useState(false); // calendar marks
 
   // Adding Custom modifiers for fixed holiday
   let holidays = [
     ...publicHolidays.map((publicHolidays) => publicHolidays.date),
   ];
+
   const { saturdayDates, sundayDates } = getWeekendDates(
     holidays[holidays.length - 1]
   );
+
   // check saturday and sunday toggle
   if (sunday) {
     holidays = [...holidays, ...sundayDates];
@@ -63,7 +71,7 @@ export default function HolidayCalendar({
     setSelectedDays(newSelectedDays);
   };
 
-  // count your whole holiday BUGGED FOR DISPLAYING HOLIDAY NAME SINCE ONCLICK SELECT IS BLOCKED
+  // count your whole holiday
   const selected = publicHolidays.find(
     (obj) => obj.date.getTime() === day?.getTime()
   );
@@ -72,7 +80,7 @@ export default function HolidayCalendar({
   // filter out the next few months date and create footer
   const holidayRange = filterDates(allHoliday, slider);
   const footer: string = marked
-    ? `${selected?.summary || 'Weekend'}`
+    ? `${selected?.summary || dict.weekend} `
     : 'fucked ';
   // sudo find longest consecutive day combined marked & selected day
   const longestHoliday = `And you have ${findLongestConsecutiveDay(

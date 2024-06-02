@@ -6,16 +6,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../components/ui/select';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { locales as options } from '../middleware';
+import { splitPathname } from '../lib/splitPathname';
 
 interface Props {
   lang: string;
 }
 export default function LanguageSelect({ lang }: Props) {
   const router = useRouter();
+  const pathname = usePathname();
+  const pathParts = splitPathname(pathname);
+  const newPath = pathParts.join('/');
   const handleSelect = (value: string) => {
-    router.push(`${value}`);
+    router.push(`${value}/${newPath}`);
   };
 
   return (

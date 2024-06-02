@@ -26,7 +26,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/middleware.js"
+    "src/app/middleware.js",
+    "src/app/[lang]/dictionaries.js"
   ],
   "exclude": ["node_modules"]
 }
