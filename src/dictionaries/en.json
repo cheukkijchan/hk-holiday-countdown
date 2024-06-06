@@ -1,3 +1,5 @@
 {
-  "weekend": "Weekend"
+  "calendar": {
+    "weekend": "weekend"
+  }
 }

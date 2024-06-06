@@ -1,3 +1,5 @@
 {
-  "weekend": "周末"
+  "calendar": {
+    "weekend": "周末"
+  }
 }

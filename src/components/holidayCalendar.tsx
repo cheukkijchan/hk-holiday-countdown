@@ -7,16 +7,17 @@ import { findLongestConsecutiveDay } from '../lib/logic';
 import { Holiday } from '../lib/types';
 import { filterDates } from '../lib/filterDates';
 import { getWeekendDates } from '../lib/getWeekendDates';
-import { Dict } from './[lang]/page';
-import Countdown from './countdown';
-import { Calendar } from '../components/ui/calendar';
-import { Slider } from '../components/ui/slider';
-import { Switch } from '../components/ui/switch';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { LocaleDictionary } from '../app/[lang]/dictionaries';
+import Countdown from '../app/countdown';
+import { Calendar } from './ui/calendar';
+import { Slider } from './ui/slider';
+import { Switch } from './ui/switch';
+import { useSearchParams } from 'next/navigation';
+import { ShareButton } from './shareButton';
 
 type HolidayCalendarProps = {
   publicHolidays: Holiday[];
-  dict: Dict;
+  dict: LocaleDictionary;
 };
 
 export default function HolidayCalendar({
@@ -26,8 +27,12 @@ export default function HolidayCalendar({
   const [slider, setSlider] = useState<number>(3);
   const [day, setDay] = useState<Date>(); //current selected day
 
-  // Save and store into URL state
-  const [selectedDays, setSelectedDays] = useState<Date[]>([]); // client selects
+  const searchParams = useSearchParams();
+  const asd = searchParams.getAll('selected').forEach((select) => {
+    return new Date(select);
+  });
+  console.log(asd);
+  const [selectedDays, setSelectedDays] = useState<Date[]>([]);
 
   const [saturday, setSaturday] = useState(true);
   const [sunday, setSunday] = useState(true);
@@ -138,8 +143,7 @@ export default function HolidayCalendar({
           onValueChange={(value) => setSlider(value[0])}
         />
       </div>
-      {slider}
-      {JSON.stringify(holidayRange.map((date) => date.toDateString()))}
+      <ShareButton selectedDays={selectedDays}></ShareButton>
     </>
   );
 }
