@@ -1,5 +1,13 @@
 {
   "calendar": {
     "weekend": "周末"
+  },
+  "language": {
+    "option": "繁體中文"
+  },
+  "mode": {
+    "light": "日間模式",
+    "dark": "黑暗模式",
+    "system": "系統預設"
   }
 }

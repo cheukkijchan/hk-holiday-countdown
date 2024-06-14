@@ -8,7 +8,6 @@ import {
 } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
 import { Share } from 'lucide-react';
-import { useSearchParams } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
 
 type Props = {
@@ -17,10 +16,9 @@ type Props = {
 
 export function ShareButton({ selectedDays }: Props) {
   // Save and store into URL state
-  const searchParams = useSearchParams();
   const { toast } = useToast();
 
-  const params = new URLSearchParams(searchParams);
+  const params = new URLSearchParams();
   selectedDays.forEach((day) => {
     params.append('selected', day.toDateString());
   });

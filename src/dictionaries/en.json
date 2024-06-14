@@ -1,5 +1,13 @@
 {
   "calendar": {
     "weekend": "weekend"
+  },
+  "language": {
+    "option": "English"
+  },
+  "mode": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
   }
 }

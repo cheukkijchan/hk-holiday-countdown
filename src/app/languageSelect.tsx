@@ -1,4 +1,5 @@
 'use client';
+
 import {
   Select,
   SelectContent,
@@ -7,12 +8,13 @@ import {
   SelectValue,
 } from '../components/ui/select';
 import { useRouter, usePathname } from 'next/navigation';
-import { locales as options } from '../middleware';
 import { splitPathname } from '../lib/splitPathname';
+import { locales, languageOption } from '../dictionaries';
 
 interface Props {
   lang: string;
 }
+
 export default function LanguageSelect({ lang }: Props) {
   const router = useRouter();
   const pathname = usePathname();
@@ -28,9 +30,9 @@ export default function LanguageSelect({ lang }: Props) {
         <SelectValue placeholder='Language' />
       </SelectTrigger>
       <SelectContent>
-        {options.map((option) => (
+        {locales.map((option) => (
           <SelectItem key={option} value={option}>
-            {option}
+            {languageOption[option]}
           </SelectItem>
         ))}
       </SelectContent>

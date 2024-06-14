@@ -1,4 +1,3 @@
-import { locales } from '../middleware';
 import { Holiday } from './types';
 
 export function getHolidays(lang: string): Holiday[] {

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { locales } from './dictionaries';
 
-export const locales = ['en', 'tc'];
 export const defaultLocale = 'tc';
 
 // Get the preferred locale, similar to the above or using a library

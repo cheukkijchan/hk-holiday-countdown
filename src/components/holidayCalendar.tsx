@@ -7,13 +7,14 @@ import { findLongestConsecutiveDay } from '../lib/logic';
 import { Holiday } from '../lib/types';
 import { filterDates } from '../lib/filterDates';
 import { getWeekendDates } from '../lib/getWeekendDates';
-import { LocaleDictionary } from '../app/[lang]/dictionaries';
+import { LocaleDictionary } from '../app/[lang]/getDictionary';
 import Countdown from '../app/countdown';
 import { Calendar } from './ui/calendar';
 import { Slider } from './ui/slider';
 import { Switch } from './ui/switch';
-import { useSearchParams } from 'next/navigation';
+
 import { ShareButton } from './shareButton';
+import { useSearchParams } from 'next/navigation';
 
 type HolidayCalendarProps = {
   publicHolidays: Holiday[];
@@ -25,18 +26,18 @@ export default function HolidayCalendar({
   dict,
 }: HolidayCalendarProps) {
   const [slider, setSlider] = useState<number>(3);
-  const [day, setDay] = useState<Date>(); //current selected day
+  const [day, setDay] = useState<Date>(); // current selected day
 
   const searchParams = useSearchParams();
-  const asd = searchParams.getAll('selected').forEach((select) => {
-    return new Date(select);
-  });
-  console.log(asd);
-  const [selectedDays, setSelectedDays] = useState<Date[]>([]);
 
+  const [selectedDays, setSelectedDays] = useState<Date[]>(
+    searchParams
+      .getAll('selected')
+      .map((str) => Date.parse(str))
+      .map((date) => new Date(date))
+  );
   const [saturday, setSaturday] = useState(true);
   const [sunday, setSunday] = useState(true);
-
   const [marked, setMarked] = useState(false); // calendar marks
 
   // Adding Custom modifiers for fixed holiday
@@ -85,10 +86,10 @@ export default function HolidayCalendar({
   // filter out the next few months date and create footer
   const holidayRange = filterDates(allHoliday, slider);
   const footer: string = marked
-    ? `${selected?.summary || dict.weekend} `
-    : 'fucked ';
+    ? `${selected?.summary || dict.calendar.weekend}, `
+    : '';
   // sudo find longest consecutive day combined marked & selected day
-  const longestHoliday = `And you have ${findLongestConsecutiveDay(
+  const longestHoliday = `you have ${findLongestConsecutiveDay(
     holidayRange
   )} days in the next ${slider} month`;
 

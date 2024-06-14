@@ -11,8 +11,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { LocaleDictionary } from '../../app/[lang]/getDictionary';
 
-export function ModeToggle() {
+type Props = {
+  dict: LocaleDictionary;
+};
+
+export function ModeToggle({ dict }: Props) {
   const { setTheme } = useTheme();
 
   return (
@@ -26,13 +31,13 @@ export function ModeToggle() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end'>
         <DropdownMenuItem onClick={() => setTheme('light')}>
-          Light
+          {dict.mode.light}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('dark')}>
-          Dark
+          {dict.mode.dark}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('system')}>
-          System
+          {dict.mode.system}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
