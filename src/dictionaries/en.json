@@ -1,6 +1,8 @@
 {
   "calendar": {
-    "weekend": "weekend"
+    "weekend": "weekend",
+    "Sat": "Sat",
+    "Sun": "Sun"
   },
   "language": {
     "option": "English"

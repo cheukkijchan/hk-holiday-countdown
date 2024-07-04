@@ -1,6 +1,8 @@
 {
   "calendar": {
-    "weekend": "周末"
+    "weekend": "周末",
+    "Sat": "六",
+    "Sun": "日"
   },
   "language": {
     "option": "繁體中文"

@@ -10,9 +10,16 @@ export default function Countdown({ date }: CountdownProps) {
   );
 
   return (
-    <>
-      <h3>{date.toDateString()}</h3>
-      <h1 className='text-red-400'>{daysUntilHoliday}</h1>
-    </>
+    <div className='flex flex-col mx-auto p-5'>
+      <div className='mx-auto text-xl'>
+        Next Holiday at {date.toDateString()}
+      </div>
+      <div className='border-red-200 border-8 shadow-xl mx-auto aspect-square  m-3 p-8 rounded-3xl'>
+        <div className='text-red-500 text-8xl text-center align-middle'>
+          {daysUntilHoliday}
+        </div>
+      </div>
+      <div className='mx-auto'>Holiday Name</div>
+    </div>
   );
 }

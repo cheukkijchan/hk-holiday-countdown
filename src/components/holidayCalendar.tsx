@@ -15,6 +15,14 @@ import { Switch } from './ui/switch';
 
 import { ShareButton } from './shareButton';
 import { useSearchParams } from 'next/navigation';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from './ui/card';
 
 type HolidayCalendarProps = {
   publicHolidays: Holiday[];
@@ -85,6 +93,7 @@ export default function HolidayCalendar({
   const allHoliday = [...selectedDays, ...holidays];
   // filter out the next few months date and create footer
   const holidayRange = filterDates(allHoliday, slider);
+
   const footer: string = marked
     ? `${selected?.summary || dict.calendar.weekend}, `
     : '';
@@ -101,50 +110,76 @@ export default function HolidayCalendar({
   });
 
   return (
-    <>
+    <div className='flex flex-col'>
       <Countdown date={nextPublicHoliday!} />
-      <div className='flex flex-row space-x-2'>
-        <div>
-          Sat
-          <Switch
-            checked={saturday}
-            onCheckedChange={() => {
-              setSelectedDays([]);
-              setSaturday(!saturday);
-            }}
-          />
-        </div>
-        <div>
-          Sun
-          <Switch
-            checked={sunday}
-            onCheckedChange={() => {
-              setSelectedDays([]);
-              setSunday(!sunday);
-            }}
-          />
-        </div>
-      </div>
-      <Calendar
-        disabled={{ before: new Date(), after: holidays[holidays.length - 1] }}
-        selected={selectedDays}
-        modifiersClassNames={{
-          marked: 'text-red-400 hover:text-red-600 font-extrabold',
-        }}
-        modifiers={{ marked: holidays }}
-        onDayClick={handleDayClick}
-        footer={footer + longestHoliday}
-      />
-      <div className='w-1/4'>
-        <Slider
-          max={12}
-          min={1}
-          step={1}
-          value={[slider]}
-          onValueChange={(value) => setSlider(value[0])}
+      <div className='m-2 min-w-1/4 gap-4 mx-auto grid sm:grid-cols-2'>
+        <Calendar
+          className='min-w-1/4 w-72 ml-auto'
+          disabled={{
+            before: new Date(),
+            after: holidays[holidays.length - 1],
+          }}
+          selected={selectedDays}
+          modifiersClassNames={{
+            marked: 'text-red-400 hover:text-red-600 font-extrabold',
+          }}
+          modifiers={{ marked: holidays }}
+          onDayClick={handleDayClick}
+          footer={footer}
         />
+        <div className='w-72 mr-auto mx-10 my-5'>
+          <Card>
+            <CardHeader>
+              <CardTitle>Calculator</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className='flex flex-row my-5 justify-center gap-10'>
+                <div>
+                  <CardDescription>
+                    <p>{dict.calendar.Sat}</p>
+                  </CardDescription>
+                  <Switch
+                    checked={saturday}
+                    onCheckedChange={() => {
+                      setSelectedDays([]);
+                      setSaturday(!saturday);
+                    }}
+                  />
+                </div>
+                <div>
+                  <CardDescription>
+                    <p>{dict.calendar.Sun}</p>
+                  </CardDescription>
+                  <Switch
+                    checked={sunday}
+                    onCheckedChange={() => {
+                      setSelectedDays([]);
+                      setSunday(!sunday);
+                    }}
+                  />
+                </div>
+              </div>
+              <CardDescription>
+                <p className='m-2 my-4'>Next Long Holiday in {slider} months</p>
+              </CardDescription>
+              <Slider
+                className='mx-auto w-4/5'
+                max={12}
+                min={1}
+                step={1}
+                value={[slider]}
+                onValueChange={(value) => setSlider(value[0])}
+              />
+              <CardDescription>
+                <p>{longestHoliday}</p>
+              </CardDescription>
+            </CardContent>
+            <CardFooter>
+              <ShareButton selectedDays={selectedDays}></ShareButton>
+            </CardFooter>
+          </Card>
+        </div>
       </div>
-      <ShareButton selectedDays={selectedDays}></ShareButton>
-    </>
+    </div>
   );
 }
