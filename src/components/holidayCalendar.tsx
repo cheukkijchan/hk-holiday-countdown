@@ -135,9 +135,7 @@ export default function HolidayCalendar({
             <CardContent>
               <div className='flex flex-row my-5 justify-center gap-10'>
                 <div>
-                  <CardDescription>
-                    <p>{dict.calendar.Sat}</p>
-                  </CardDescription>
+                  <CardDescription>{dict.calendar.Sat}</CardDescription>
                   <Switch
                     checked={saturday}
                     onCheckedChange={() => {
@@ -147,9 +145,7 @@ export default function HolidayCalendar({
                   />
                 </div>
                 <div>
-                  <CardDescription>
-                    <p>{dict.calendar.Sun}</p>
-                  </CardDescription>
+                  <CardDescription>{dict.calendar.Sun}</CardDescription>
                   <Switch
                     checked={sunday}
                     onCheckedChange={() => {
@@ -160,7 +156,7 @@ export default function HolidayCalendar({
                 </div>
               </div>
               <CardDescription>
-                <p className='m-2 my-4'>Next Long Holiday in {slider} months</p>
+                Next Long Holiday in {slider} months
               </CardDescription>
               <Slider
                 className='mx-auto w-4/5'
@@ -170,9 +166,7 @@ export default function HolidayCalendar({
                 value={[slider]}
                 onValueChange={(value) => setSlider(value[0])}
               />
-              <CardDescription>
-                <p>{longestHoliday}</p>
-              </CardDescription>
+              <CardDescription>{longestHoliday}</CardDescription>
             </CardContent>
             <CardFooter>
               <ShareButton selectedDays={selectedDays}></ShareButton>
