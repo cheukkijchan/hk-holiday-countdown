@@ -21,6 +21,7 @@ export default async function Page({ params: { lang } }: Props) {
 
   return (
     <main className='flex flex-col h-screen justify-between box-content'>
+      <p>preview</p>
       <NavBar lang={lang} />
       <HolidayCalendar publicHolidays={publicHolidays} dict={dict} />
       <Footer dict={dict} />
