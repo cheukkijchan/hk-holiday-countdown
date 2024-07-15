@@ -16,7 +16,7 @@ type Props = {
 
 export default async function Page({ params: { lang } }: Props) {
   if (!locales.includes(lang)) notFound();
-  const publicHolidays = getHolidays(lang);
+  const publicHolidays = await getHolidays(lang);
   const dict = getDictionary(lang);
 
   return (
