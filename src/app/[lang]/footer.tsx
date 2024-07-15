@@ -7,7 +7,7 @@ type Props = {
 
 export function Footer({ dict }: Props) {
   return (
-    <div className='flex justify-end bg-muted p-2'>
+    <div className='flex justify-end p-2'>
       <ModeToggle dict={dict} />
     </div>
   );
