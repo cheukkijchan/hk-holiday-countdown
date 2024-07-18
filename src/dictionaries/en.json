@@ -1,5 +1,12 @@
 {
+  "countdown": {
+    "desc": "Upcoming Holiday at"
+  },
   "calendar": {
+    "sliderDesc1": "Next Long Holiday in ",
+    "sliderDesc2": " months",
+    "resultDesc1": "",
+    "resultDesc2": " consecutive holidays in total",
     "weekend": "weekend",
     "Sat": "Sat",
     "Sun": "Sun"

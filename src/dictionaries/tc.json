@@ -1,5 +1,13 @@
 {
+  "countdown": {
+    "desc": "下個假日是在"
+  },
   "calendar": {
+    "sliderDesc1": "未來 ",
+    "sliderDesc2": " 個月的長假期",
+    "resultDesc1": "共 ",
+    "resultDesc2": " 天連假",
+
     "weekend": "周末",
     "Sat": "六",
     "Sun": "日"

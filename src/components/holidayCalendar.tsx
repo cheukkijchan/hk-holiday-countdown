@@ -8,7 +8,7 @@ import { Holiday } from '../lib/types';
 import { filterDates } from '../lib/filterDates';
 import { getWeekendDates } from '../lib/getWeekendDates';
 import { LocaleDictionary } from '../app/[lang]/getDictionary';
-import Countdown from '../app/countdown';
+import Countdown from './countdown';
 import { Calendar } from './ui/calendar';
 import { Slider } from './ui/slider';
 import { Switch } from './ui/switch';
@@ -94,24 +94,21 @@ export default function HolidayCalendar({
   // filter out the next few months date and create footer
   const holidayRange = filterDates(allHoliday, slider);
 
-  const footer: string = marked
-    ? `${selected?.summary || dict.calendar.weekend}, `
-    : '';
-  // sudo find longest consecutive day combined marked & selected day
-  const longestHoliday = `you have ${findLongestConsecutiveDay(
-    holidayRange
-  )} days in the next ${slider} month`;
+  const footer = (
+    <div className='text-center text-primary'>
+      {marked ? `${selected?.summary || dict.calendar.weekend} ` : ''}
+    </div>
+  );
 
-  const nextPublicHoliday = [
-    ...publicHolidays.map((publicHolidays) => publicHolidays.date),
-  ].find((i) => {
-    const today = new Date();
-    return i > today;
-  });
+  // Calculate longest consecutive day combined marked & selected day
+  const longestHoliday = findLongestConsecutiveDay(holidayRange);
 
   return (
     <div className='flex flex-col'>
-      <Countdown date={nextPublicHoliday!} />
+      <Countdown
+        publicHolidays={publicHolidays}
+        countdownDescription={dict.countdown.desc}
+      />
       <div className='m-2 min-w-1/4 gap-4 mx-auto grid sm:grid-cols-2'>
         <Calendar
           className='min-w-1/4 w-72 ml-auto'
@@ -127,13 +124,13 @@ export default function HolidayCalendar({
           onDayClick={handleDayClick}
           footer={footer}
         />
-        <div className='w-72 mr-auto mx-10 my-5'>
+        <div className='w-72 mr-auto mx-10'>
           <Card>
             <CardHeader>
               <CardTitle>Calculator</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className='flex flex-row my-5 justify-center gap-10'>
+              <div className='flex flex-row mb-8 ml-8 gap-10'>
                 <div>
                   <CardDescription>{dict.calendar.Sat}</CardDescription>
                   <Switch
@@ -155,20 +152,27 @@ export default function HolidayCalendar({
                   />
                 </div>
               </div>
-              <CardDescription>
-                Next Long Holiday in {slider} months
+
+              <CardDescription className='ml-2'>
+                {dict.calendar.sliderDesc1}
+                <span className='text-primary'>{slider}</span>
+                {dict.calendar.sliderDesc2}
               </CardDescription>
               <Slider
-                className='mx-auto w-4/5'
+                className='mx-auto w-4/5 my-4'
                 max={12}
                 min={1}
                 step={1}
                 value={[slider]}
                 onValueChange={(value) => setSlider(value[0])}
               />
-              <CardDescription>{longestHoliday}</CardDescription>
+              <CardDescription className='ml-2 w-4/5'>
+                {dict.calendar.resultDesc1}
+                <span className='text-primary'>{longestHoliday}</span>
+                {dict.calendar.resultDesc2}
+              </CardDescription>
             </CardContent>
-            <CardFooter>
+            <CardFooter className='mx-5 mt-2'>
               <ShareButton selectedDays={selectedDays}></ShareButton>
             </CardFooter>
           </Card>
