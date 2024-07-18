@@ -5,7 +5,7 @@ export async function getHolidays(lang: string): Promise<Holiday[]> {
   const res = await fetch(`https://www.1823.gov.hk/common/ical/${lang}.json`);
   const data = await res.json();
 
-  // Local Data for dev testing
+  // Local Data for testing
   // const data = require(`../../public/data/${lang}.json`);
 
   const holidays = (data.vcalendar[0].vevent as Holiday[]).map((holiday) => {
