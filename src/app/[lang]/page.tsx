@@ -7,6 +7,7 @@ import { getDictionary } from './getDictionary';
 import { type Locale, locales } from '../../dictionaries';
 import { NavBar } from './navbar';
 import { Footer } from './footer';
+import Countdown from '../../components/countdown';
 
 type Props = {
   params: {
@@ -22,7 +23,16 @@ export default async function Page({ params: { lang } }: Props) {
   return (
     <main className='flex flex-col h-screen justify-between box-content'>
       <NavBar lang={lang} />
-      <HolidayCalendar publicHolidays={publicHolidays} dict={dict} />
+      <Countdown
+        publicHolidays={publicHolidays}
+        countdownDescription={dict.countdown.desc}
+        locale={lang}
+      />
+      <HolidayCalendar
+        publicHolidays={publicHolidays}
+        dict={dict}
+        locale={lang}
+      ></HolidayCalendar>
       <Footer dict={dict} />
     </main>
   );

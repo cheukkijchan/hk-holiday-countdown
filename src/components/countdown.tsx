@@ -1,15 +1,18 @@
+import { format } from 'date-fns';
+import { enUS, zhHK } from 'date-fns/locale';
 import { Holiday } from '../lib/types';
+import { Locale } from '../dictionaries';
 
 type CountdownProps = {
   publicHolidays: Holiday[];
   countdownDescription: string;
-  // date: Date;
-  // holidayName: string;
+  locale: Locale;
 };
 
-export default function Countdown({
+export default async function Countdown({
   publicHolidays,
   countdownDescription,
+  locale,
 }: CountdownProps) {
   const today = new Date();
 
@@ -18,6 +21,14 @@ export default function Countdown({
   ].find((i) => {
     return i > today;
   });
+
+  const formatLocale = locale === 'tc' ? 'zhHK' : 'enUS';
+  const localeDynamic = (await import('date-fns/locale'))[formatLocale];
+
+  const dateString = format(nextPublicHoliday!, 'PPPP', {
+    locale: localeDynamic,
+  });
+
   const nextHolidayName = publicHolidays.find(
     (holiday) => holiday.date === nextPublicHoliday
   )?.summary;
@@ -30,7 +41,7 @@ export default function Countdown({
   return (
     <div className='flex flex-col mx-auto p-5'>
       <div className='mx-auto text-xl'>
-        {countdownDescription + ' ' + nextPublicHoliday!.toDateString()}
+        {countdownDescription + ' ' + dateString}
       </div>
       <div className='flex justify-center items-center border-red-200 border-8 shadow-xl mx-auto aspect-square  m-3 p-8 rounded-3xl'>
         <div className='text-red-500 text-8xl'>{daysUntilHoliday}</div>

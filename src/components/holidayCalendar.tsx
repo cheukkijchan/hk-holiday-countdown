@@ -27,6 +27,7 @@ import {
 type HolidayCalendarProps = {
   publicHolidays: Holiday[];
   dict: LocaleDictionary;
+  locale: string;
 };
 
 export default function HolidayCalendar({
@@ -105,10 +106,6 @@ export default function HolidayCalendar({
 
   return (
     <div className='flex flex-col'>
-      <Countdown
-        publicHolidays={publicHolidays}
-        countdownDescription={dict.countdown.desc}
-      />
       <div className='m-2 min-w-1/4 gap-4 mx-auto grid sm:grid-cols-2'>
         <Calendar
           className='min-w-1/4 w-72 ml-auto'
